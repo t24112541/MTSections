@@ -1,0 +1,52 @@
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model LocationGeography {
+    GeographyID Int                @id @default(autoincrement()) @map("geography_id") @db.UnsignedInt
+    NameTH      String             @map("name_th") @db.VarChar(255)
+    NameEN      String?            @map("name_en") @db.VarChar(255)
+    
+    Province    LocationProvince[]
+
+    @@map("location_geography")
+}
+
+model LocationProvince {
+    ProvinceID  Int     @id @default(autoincrement()) @map("province_id") @db.UnsignedInt
+    GeographyID Int     @map("geography_id") @db.UnsignedInt
+    Code        String  @map("code") @db.VarChar(10)
+    NameTH      String  @map("name_th") @db.VarChar(255)
+    NameEN      String? @map("name_en") @db.VarChar(255)
+
+    Geography LocationGeography  @relation(fields: [GeographyID], references: [GeographyID], onDelete: Cascade, onUpdate: Cascade)
+    District  LocationDistrict[]
+
+    @@map("location_province")
+}
+
+model LocationDistrict {
+    DistrictID Int     @id @default(autoincrement()) @map("district_id") @db.UnsignedInt
+    ProvinceID Int     @map("province_id") @db.UnsignedInt
+    Code       String  @map("code") @db.VarChar(10)
+    NameTH     String  @map("name_th") @db.VarChar(255)
+    NameEN     String? @map("name_en") @db.VarChar(255)
+
+    Province    LocationProvince      @relation(fields: [ProvinceID], references: [ProvinceID], onDelete: Cascade, onUpdate: Cascade)
+    Subdistrict LocationSubdistrict[]
+
+    @@map("location_district")
+}
+
+model LocationSubdistrict {
+    SubdistrictID Int              @id @default(autoincrement()) @map("subdistrict_id") @db.UnsignedInt
+    DistrictID    Int              @map("district_id") @db.UnsignedInt
+    ZipCode       String           @map("zip_code") @db.VarChar(5)
+    NameTH        String           @map("name_th") @db.VarChar(255)
+    NameEN        String?          @map("name_en") @db.VarChar(255)
+    
+    District      LocationDistrict @relation(fields: [DistrictID], references: [DistrictID], onDelete: Cascade, onUpdate: Cascade)
+
+    @@map("location_subdistrict")
+}

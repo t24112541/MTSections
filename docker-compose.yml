@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  db:
+    container_name: maria_mt_section
+    image: mariadb:10.7.8
+    volumes:
+      - ./db/data/:/var/lib/mysql/
+    environment:
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_USER: $MYSQL_USER
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      TZ: $TIME_ZONE
+    ports:
+      - $MYSQL_PORT:$MYSQL_DOCKER_PORT
+    restart: unless-stopped
+
