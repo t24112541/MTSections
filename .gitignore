@@ -1,5 +1,5 @@
-db
-
+db/data
+.scannerwork/
 # Logs
 logs
 *.log

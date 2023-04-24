@@ -1,15 +1,31 @@
-import Joi from "joi";
+import Joi from "joi"
 
-const sortType = ["asc", "desc"];
+const sortType = ["asc", "desc"]
+const activeStatus = ["YES", "NO"]
 
-const reqGeography = Joi.object({
-  keyword: Joi.string(),
-  limit: Joi.number(),
-  offset: Joi.number(),
-  sortBy: Joi.string(),
-  sortType: Joi.string().valid(...Object.values(sortType)),
-})
+const filterAndPagination = {
+  query: Joi.object().keys({
+    id: Joi.number(),
+    keyword: Joi.string(),
+    whereBy: Joi.string(),
+    whereVal: Joi.string(),
+    limit: Joi.number().min(0),
+    offset: Joi.number().min(0),
+    sortBy: Joi.string(),
+    sortType: Joi.string().valid(...Object.values(sortType)).default("asc"),
+  })
+}
+
+const createSection = {
+  body: Joi.object().keys({
+    code: Joi.string().required(),
+    name: Joi.string().required(),
+    isActive: Joi.string().valid(...Object.values(activeStatus)).default("1"),
+    subdistrictID: Joi.number(),
+  })
+}
 
 export default {
-  reqGeography
+  filterAndPagination,
+  createSection
 }

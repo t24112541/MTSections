@@ -8,22 +8,21 @@ enum IsActive {
   YES @map("1")
 }
 
-model Section {
-  ID            Int       @id @default(autoincrement()) @map("id")
-  Code          String    @map("code") @db.VarChar(255)
-  Name          String    @map("name") @db.VarChar(255)
-  IsActive      IsActive  @default(YES) @map("is_active")
-  CreatedAt     DateTime  @default(now()) @map("created_at")
-  UpdatedAt     DateTime  @updatedAt @map("updated_at")
-  Deleted       DateTime? @map("deleted_at")
-  SubdistrictID Int?       @map("subdistrict_id") @db.UnsignedInt
+model section {
+  id            Int       @id @default(autoincrement())
+  code          String    @map("code") @db.VarChar(255) @unique
+  name          String    @map("name") @db.VarChar(255)
+  isActive      IsActive  @default(YES) @map("is_active")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deleted       DateTime? @map("deleted_at")
+  subdistrictID Int?      @map("subdistrict_id") @db.UnsignedInt
 
-  Subdistrict LocationSubdistrict? @relation(fields: [SubdistrictID], references: [SubdistrictID], onDelete: Restrict, onUpdate: Restrict)
+  subdistrict locationSubdistrict? @relation(fields: [subdistrictID], references: [subdistrictID], onDelete: Restrict, onUpdate: Restrict)
 
-  @@map("section")
 }
 
-model LocationSubdistrict {
-  SubdistrictID Int       @id
-  Section       Section[]
+model locationSubdistrict {
+  subdistrictID Int       @id
+  section       section[]
 }

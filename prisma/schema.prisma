@@ -9,61 +9,59 @@ generator client {
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
-model Section {
-  ID            Int                  @id @default(autoincrement()) @map("id")
-  Code          String               @map("code") @db.VarChar(255)
-  Name          String               @map("name") @db.VarChar(255)
-  IsActive      IsActive             @default(YES) @map("is_active")
-  CreatedAt     DateTime             @default(now()) @map("created_at")
-  UpdatedAt     DateTime             @updatedAt @map("updated_at")
-  Deleted       DateTime?            @map("deleted_at")
-  SubdistrictID Int?                 @map("subdistrict_id") @db.UnsignedInt
-  Subdistrict   LocationSubdistrict? @relation(name: "LocationSubdistrictToSection", fields: [SubdistrictID], references: [SubdistrictID], onDelete: Restrict, onUpdate: Restrict)
-
-  @@map("section")
+model section {
+  id            Int                  @id @default(autoincrement())
+  code          String               @unique @map("code") @db.VarChar(255)
+  name          String               @map("name") @db.VarChar(255)
+  isActive      IsActive             @default(YES) @map("is_active")
+  createdAt     DateTime             @default(now()) @map("created_at")
+  updatedAt     DateTime             @updatedAt @map("updated_at")
+  deleted       DateTime?            @map("deleted_at")
+  subdistrictID Int?                 @map("subdistrict_id") @db.UnsignedInt
+  subdistrict   locationSubdistrict? @relation(name: "locationSubdistrictTosection", fields: [subdistrictID], references: [subdistrictID], onDelete: Restrict, onUpdate: Restrict)
 }
 
-model LocationSubdistrict {
-  SubdistrictID Int              @id @default(autoincrement()) @map("subdistrict_id") @db.UnsignedInt
-  Section       Section[]        @relation(name: "LocationSubdistrictToSection")
-  DistrictID    Int              @map("district_id") @db.UnsignedInt
-  ZipCode       String           @map("zip_code") @db.VarChar(5)
-  NameTH        String           @map("name_th") @db.VarChar(255)
-  NameEN        String?          @map("name_en") @db.VarChar(255)
-  District      LocationDistrict @relation(name: "LocationDistrictToLocationSubdistrict", fields: [DistrictID], references: [DistrictID], onDelete: Cascade, onUpdate: Cascade)
+model locationSubdistrict {
+  subdistrictID Int              @id @default(autoincrement()) @map("subdistrict_id") @db.UnsignedInt
+  section       section[]        @relation(name: "locationSubdistrictTosection")
+  districtID    Int              @map("district_id") @db.UnsignedInt
+  zipcode       String           @map("zip_code") @db.VarChar(5)
+  nameTH        String           @map("name_th") @db.VarChar(255)
+  nameEN        String?          @map("name_en") @db.VarChar(255)
+  district      locationDistrict @relation(name: "locationDistrictTolocationSubdistrict", fields: [districtID], references: [districtID], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("location_subdistrict")
 }
 
-model LocationGeography {
-  GeographyID Int                @id @default(autoincrement()) @map("geography_id") @db.UnsignedInt
-  NameTH      String             @map("name_th") @db.VarChar(255)
-  NameEN      String?            @map("name_en") @db.VarChar(255)
-  Province    LocationProvince[] @relation(name: "LocationGeographyToLocationProvince")
+model locationGeography {
+  geographyID Int                @id @default(autoincrement()) @map("geography_id") @db.UnsignedInt
+  nameTH      String             @map("name_th") @db.VarChar(255)
+  nameEN      String?            @map("name_en") @db.VarChar(255)
+  province    locationProvince[] @relation(name: "locationGeographyTolocationProvince")
 
   @@map("location_geography")
 }
 
-model LocationProvince {
-  ProvinceID  Int                @id @default(autoincrement()) @map("province_id") @db.UnsignedInt
-  GeographyID Int                @map("geography_id") @db.UnsignedInt
-  Code        String             @map("code") @db.VarChar(10)
-  NameTH      String             @map("name_th") @db.VarChar(255)
-  NameEN      String?            @map("name_en") @db.VarChar(255)
-  Geography   LocationGeography  @relation(name: "LocationGeographyToLocationProvince", fields: [GeographyID], references: [GeographyID], onDelete: Cascade, onUpdate: Cascade)
-  District    LocationDistrict[] @relation(name: "LocationDistrictToLocationProvince")
+model locationProvince {
+  provinceID  Int                @id @default(autoincrement()) @map("province_id") @db.UnsignedInt
+  geographyID Int                @map("geography_id") @db.UnsignedInt
+  code        String             @map("code") @db.VarChar(10)
+  nameTH      String             @map("name_th") @db.VarChar(255)
+  nameEN      String?            @map("name_en") @db.VarChar(255)
+  geography   locationGeography  @relation(name: "locationGeographyTolocationProvince", fields: [geographyID], references: [geographyID], onDelete: Cascade, onUpdate: Cascade)
+  district    locationDistrict[] @relation(name: "locationDistrictTolocationProvince")
 
   @@map("location_province")
 }
 
-model LocationDistrict {
-  DistrictID  Int                   @id @default(autoincrement()) @map("district_id") @db.UnsignedInt
-  ProvinceID  Int                   @map("province_id") @db.UnsignedInt
-  Code        String                @map("code") @db.VarChar(10)
-  NameTH      String                @map("name_th") @db.VarChar(255)
-  NameEN      String?               @map("name_en") @db.VarChar(255)
-  Province    LocationProvince      @relation(name: "LocationDistrictToLocationProvince", fields: [ProvinceID], references: [ProvinceID], onDelete: Cascade, onUpdate: Cascade)
-  Subdistrict LocationSubdistrict[] @relation(name: "LocationDistrictToLocationSubdistrict")
+model locationDistrict {
+  districtID  Int                   @id @default(autoincrement()) @map("district_id") @db.UnsignedInt
+  provinceID  Int                   @map("province_id") @db.UnsignedInt
+  code        String                @map("code") @db.VarChar(10)
+  nameTH      String                @map("name_th") @db.VarChar(255)
+  nameEN      String?               @map("name_en") @db.VarChar(255)
+  province    locationProvince      @relation(name: "locationDistrictTolocationProvince", fields: [provinceID], references: [provinceID], onDelete: Cascade, onUpdate: Cascade)
+  subdistrict locationSubdistrict[] @relation(name: "locationDistrictTolocationSubdistrict")
 
   @@map("location_district")
 }

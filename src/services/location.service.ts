@@ -1,43 +1,17 @@
-import { PrismaClient } from '@prisma/client'
-import { status, customResponse} from '../models/response'
+import { customResponse, customStatus} from '../models/response'
 
-const prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
-})
+const getData = async(req:any, model:any, where:any) => {
+    const res = await model.findMany({
+        where,
+        orderBy: req.sortBy ? { [req.sortBy]: req.sortType } : undefined,
+        skip: req.offset,
+        take: req.limit,
+    })
+    const count = await model.count({where})
 
-const getGeography = async(req:any) => {
-    try{
-        let keyword:string = req.keyword ?? ''
-        const where = {
-            OR: [
-                { NameTH: { contains: keyword.trim() } },
-                { NameEN: { contains: keyword.trim() } }
-            ]
-        }
-
-        const result = await prisma.locationGeography.findMany({
-            where,
-            orderBy: req.sortBy ? { [req.sortBy]: req.sortType } : undefined,
-            skip: req.offset,
-            take: req.limit,
-        })
-        const count = await prisma.locationGeography.count({where})
-        
-        const res: customResponse = {
-            code: count != 0 ? status.SUCCESS : status.NOT_FOUND,
-            total: count,
-            data: result
-        }
-
-        return res
-    }catch(error:any) {
-        const res: customResponse = {
-            code: status.SUCCESS,
-            data: error.message 
-        }
-        
-        return res
-    }
+    return {res, count}
 }
 
-export default {getGeography}
+export default {
+    getData
+}

@@ -6,3 +6,7 @@
 # Prisma generate client
 > npx prisma generate
 
+# Kill process
+netstat -ano | findstr :3300
+
+taskkill /PID <PID> /F

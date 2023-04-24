@@ -1,4 +1,4 @@
-export const status = {
+export const customStatus = {
     SUCCESS: 200,
     CREATED: 201,
     BAD_REQUEST: 400,
@@ -7,7 +7,7 @@ export const status = {
 }
 
 export interface customResponse {
-    code: number
+    statusCode: any
     total?: number
     data?: any
 }

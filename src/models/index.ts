@@ -1,1 +1,1 @@
-export { default as request } from './request.model'
+export { default as customRequest } from './request.model'

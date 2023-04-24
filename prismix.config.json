@@ -4,7 +4,8 @@
           "input": [
               "prisma/base.prisma",
               "prisma/section.prisma",
-              "prisma/location.prisma"
+              "prisma/location.prisma",
+              "prisma/client.prisma"
           ],
           "output": "prisma/schema.prisma"
       }
