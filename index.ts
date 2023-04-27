@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import helmet from 'helmet'
 import { authLimiter } from './src/middlewares/rateLimiter'
 import { customResponse, customStatus } from './src/models/response'
 import { PrismaClient } from '@prisma/client'
@@ -17,15 +18,26 @@ conn.catch((e)=>{
 
 dotenv.config()
 
-const app:Application = express()
-const PORT:any = process.env.SERVER_PORT
+const app = express()
+const PORT = process.env.SERVER_PORT
 const router = require("./src/routers/router")
+const allowOrigins = ["*"]
+const corsOptions = {
+  origin: (origin:any, callback:any) => {
+    if(allowOrigins.includes(origin) || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error("BLOCKED BY CORS"))
+    }
+  }
+}
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(morgan('dev'))
-app.use(cors())
+app.use(morgan('combined'))
+app.use(cors(corsOptions))
 app.use(cookieParser())
+app.use(helmet())
 
 app.use("/", authLimiter, router)
 

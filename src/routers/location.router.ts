@@ -1,5 +1,4 @@
 import express from 'express'
-import multer from 'multer'
 import { location } from '../api'
 import validate from '../middlewares/validate'
 import { customRequest } from '../models'

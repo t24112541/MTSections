@@ -2,7 +2,7 @@ import { errorReturn } from './../utils/customError'
 import { RequestHandler } from 'express'
 import { clientService } from '../services'
 import { PrismaClient } from '@prisma/client'
-import { customStatus, customResponse, wordReturn} from '../models/response'
+import { customStatus, customResponse } from '../models/response'
 import { genPassword } from '../utils/passwordGen'
 import  bcrypt from 'bcrypt'
 
