@@ -17,3 +17,13 @@ services:
       - $MYSQL_PORT:$MYSQL_DOCKER_PORT
     restart: unless-stopped
 
+  redis:
+    container_name: redis
+    image: redis:latest
+    entrypoint: redis-server --requirepass $REDIS_PASS --maxmemory 512mb --maxmemory-policy allkeys-lru
+    networks:
+      - default
+    ports:
+      - $REDIS_PORT:$REDIS_DOCKER_PORT
+    restart: unless-stopped
+  

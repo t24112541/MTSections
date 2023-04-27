@@ -66,6 +66,19 @@ model locationDistrict {
   @@map("location_district")
 }
 
+model sectionClient {
+  ID           Int       @id @default(autoincrement()) @map("geography_id") @db.UnsignedInt
+  clientID     String    @unique @default(uuid()) @map("client_id")
+  clientSecret String    @map("client_secret") @db.Text
+  nameTH       String?   @map("name_th") @db.VarChar(255)
+  nameEN       String?   @map("name_en") @db.VarChar(255)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deleted      DateTime? @map("deleted_at")
+
+  @@map("section_client")
+}
+
 enum IsActive {
   NO  @map("0")
   YES @map("1")

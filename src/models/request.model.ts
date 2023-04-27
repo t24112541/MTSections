@@ -25,7 +25,23 @@ const createSection = {
   })
 }
 
+const createClient = {
+  body: Joi.object().keys({
+    nameTH: Joi.string(),
+    nameEN: Joi.string(),
+  })
+}
+
+const auth = {
+  body: Joi.object().keys({
+    clientID: Joi.string().required(),
+    clientSecret: Joi.string().required(),
+  })
+}
+
 export default {
   filterAndPagination,
-  createSection
+  createSection,
+  createClient,
+  auth
 }

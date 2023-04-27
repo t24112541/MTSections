@@ -3,12 +3,15 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model client {
-    ID           Int     @id @default(autoincrement()) @map("geography_id") @db.UnsignedInt
-    clientID     String  @map("client_id") @default(uuid()) @unique
-    clientSecred String  @map("client_secred") @db.Text
-    nameTH       String? @map("name_th") @db.VarChar(255)
-    nameEN       String? @map("name_en") @db.VarChar(255)
+model sectionClient {
+    ID           Int       @id @default(autoincrement()) @map("geography_id") @db.UnsignedInt
+    clientID     String    @unique @default(uuid()) @map("client_id")
+    clientSecret String    @map("client_secret") @db.Text
+    nameTH       String?   @map("name_th") @db.VarChar(255)
+    nameEN       String?   @map("name_en") @db.VarChar(255)
+    createdAt    DateTime  @default(now()) @map("created_at")
+    updatedAt    DateTime  @updatedAt @map("updated_at")
+    deleted      DateTime? @map("deleted_at")
 
-    @@map("client")
+    @@map("section_client")
 }

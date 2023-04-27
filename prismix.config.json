@@ -5,7 +5,7 @@
               "prisma/base.prisma",
               "prisma/section.prisma",
               "prisma/location.prisma",
-              "prisma/client.prisma"
+              "prisma/clients.prisma"
           ],
           "output": "prisma/schema.prisma"
       }
