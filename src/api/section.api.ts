@@ -1,4 +1,4 @@
-import { errorReturn } from './../utils/customError';
+import { errorReturn } from './../utils/customError'
 import { RequestHandler } from 'express'
 import { sectionService } from '../services'
 import { PrismaClient } from '@prisma/client'
@@ -9,7 +9,7 @@ const prisma = new PrismaClient({
     errorFormat: 'minimal',
 })
 
-const getSection:RequestHandler = async(req:any,res:any) => {
+const getSection:RequestHandler = async(req:any, res:any) => {
     let keyword:string = req.query.keyword ?? ''
     const where = {
         OR: [
@@ -35,10 +35,10 @@ const getSection:RequestHandler = async(req:any,res:any) => {
     })
 } 
 
-const createSection:RequestHandler =async (req:any, res:any) => {
+const createSection:RequestHandler = async (req:any, res:any) => {
     sectionService.createData(req.body, prisma.section).then((result)=>{
         const ress: customResponse = {
-            statusCode: customStatus.CREATED ,
+            statusCode: customStatus.CREATED,
             data: result
         }
 

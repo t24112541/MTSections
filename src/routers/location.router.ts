@@ -4,7 +4,6 @@ import { location } from '../api'
 import validate from '../middlewares/validate'
 import { customRequest } from '../models'
 
-const upload = multer()
 const router= express.Router()
 
 router.get('/geography', validate(customRequest.filterAndPagination), location.getGeography)

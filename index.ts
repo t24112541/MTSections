@@ -2,13 +2,10 @@ import express,{ Application} from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import { authLimiter } from './src/middlewares/rateLimiter'
 import { customResponse, customStatus } from './src/models/response'
 import { PrismaClient } from '@prisma/client'
-
-// const session = require('express-session')
-// const RedisStore = require('connect-redis')(session)
-// const passport = require('passport')
 
 const prisma = new PrismaClient()
 
@@ -24,27 +21,11 @@ const app:Application = express()
 const PORT:any = process.env.SERVER_PORT
 const router = require("./src/routers/router")
 
-// REDIS_PASS
-// REDIS_HOST
-// REDIS_PORT
-
-// const redisPass = process.env.REDIS_PASS
-// const redisHost = process.env.REDIS_HOST
-// const redisPort = process.env.REDIS_PORT
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 app.use(cors())
-// app.use(session({
-//   store: new RedisStore({
-//     url: `redis://${redisPass}@${redisHost}/${redisPort}`
-//   }),
-//   resave: false,
-//   saveUninitialized: false
-// }))
-// app.use(passport.initialize())
-// app.use(passport.session())
+app.use(cookieParser())
 
 app.use("/", authLimiter, router)
 

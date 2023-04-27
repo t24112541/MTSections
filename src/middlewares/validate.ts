@@ -31,4 +31,4 @@ const validate = (schema: object) => (req: Request, res: Response, next: NextFun
   return next()
 }
 
-export default validate;
+export default validate

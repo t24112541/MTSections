@@ -1,5 +1,3 @@
-import { customResponse, customStatus} from '../models/response'
-
 const getData = async(req:any, model:any, where:any) => {
     const res = await model.findMany({
         where,

@@ -9,7 +9,11 @@ export const customStatus = {
 }
 
 export const wordReturn = {
-    AUTH_WRONG: "client id or client secret is wrong"
+    AUTH_WRONG: "client id or client secret is wrong",
+    AUTH_CLIENT_NOT_FOUND: "client not found",
+    AUTH_SESSION_EXPIRED: "session expired",
+    AUTH_TOKEN_EXPIRED: "token expired",
+    AUTH_UNAUTHORIZED: "client unauthorized"
 }
 
 export interface customResponse {

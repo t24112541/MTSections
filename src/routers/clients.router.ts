@@ -3,13 +3,15 @@ import multer from 'multer'
 import { clients } from '../api'
 import validate from '../middlewares/validate'
 import { customRequest } from '../models'
+import requireJWT from '../middlewares/requireJWT'
 
-const upload = multer()
+const upload = multer({ 
+    limits: { fileSize: 1 * 1024 * 1024 }
+})
+
 const router= express.Router()
 
-router.get('/', validate(customRequest.filterAndPagination), clients.getClients)
-router.post('/auth', upload.none(), validate(customRequest.auth), clients.authClient)
+router.get('/', requireJWT, validate(customRequest.filterAndPagination), clients.getClients)
 router.post('/', upload.none(), validate(customRequest.createClient), clients.createClients)
-
 
 module.exports = router

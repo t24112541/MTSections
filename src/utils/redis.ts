@@ -22,9 +22,10 @@ const connectRedis = async () => {
   } catch (error) {
     console.log('Redis client connect fail:' + error)
     setTimeout(connectRedis, 5000)
+    await redisClient.disconnect()
   }
 };
 
-connectRedis();
+connectRedis()
 
 export default redisClient

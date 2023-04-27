@@ -9,7 +9,7 @@ const prisma = new PrismaClient({
     errorFormat: 'minimal',
 })
 
-const getGeography:RequestHandler = async(req:any,res:any) => {
+const getGeography:RequestHandler = async(req:any, res:any) => {
 
     let keyword:string = req.query.keyword ?? ''
     const where = {
@@ -33,7 +33,7 @@ const getGeography:RequestHandler = async(req:any,res:any) => {
     })
 }
 
-const getProvince:RequestHandler = async(req:any,res:any) => {
+const getProvince:RequestHandler = async(req:any, res:any) => {
     let keyword:string = req.query.keyword ?? ''
     const where = {
         geographyID: req.query.id,
@@ -57,7 +57,7 @@ const getProvince:RequestHandler = async(req:any,res:any) => {
     })
 }
 
-const getDistrict:RequestHandler = async(req:any,res:any) => {
+const getDistrict:RequestHandler = async(req:any, res:any) => {
     let keyword:string = req.query.keyword ?? ''
     const where = {
         provinceID: req.query.id,
@@ -81,7 +81,7 @@ const getDistrict:RequestHandler = async(req:any,res:any) => {
     })
 }
 
-const getSubdistrict:RequestHandler = async(req:any,res:any) => {
+const getSubdistrict:RequestHandler = async(req:any, res:any) => {
     let keyword:string = req.query.keyword ?? ''
         const where = {
             districtID: req.query.id,

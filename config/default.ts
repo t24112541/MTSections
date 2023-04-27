@@ -1,5 +1,5 @@
 export default {
-  redisCacheExpiresIn: 60,
-  refreshTokenExpiresIn: 60,
-  accessTokenExpiresIn: 15,
-};
+  redisCacheExpiresIn: 10,    // min
+  refreshTokenExpiresIn: 10,  // min
+  accessTokenExpiresIn: 0.5,   // min
+}
