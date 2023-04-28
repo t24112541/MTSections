@@ -1,4 +1,4 @@
-FROM node:16.18 AS builder
+FROM node:20-alpine3.16 AS builder
 COPY . /app/MTSection
 WORKDIR /app/MTSection
 RUN npm i --force

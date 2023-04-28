@@ -19,3 +19,6 @@ pm2 monit
 taskkill /PID <PID> /F
 
 sonar-scanner.bat -D"sonar.projectKey=MTSection" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9001" -D"sonar.login=sqp_1b553861913f9eac5bb234ed82a77fa25f046c24"
+
+
+"prismix": "^1.0.22",
