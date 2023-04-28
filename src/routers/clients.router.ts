@@ -6,7 +6,7 @@ import { customRequest } from '../models'
 import requireJWT from '../middlewares/requireJWT'
 
 const upload = multer({ 
-    limits: { fileSize: 1 * 1024 * 1024 }
+    limits: { fileSize: 1 * 1024 * 1024 }  // 1 MB
 })
 
 const router= express.Router()

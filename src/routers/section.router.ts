@@ -5,7 +5,7 @@ import validate from '../middlewares/validate'
 import { customRequest } from '../models'
 
 const upload = multer({ 
-    limits: { fileSize: 1 * 1024 * 1024 }
+    limits: { fileSize: 1 * 1024 * 1024 }  // 1 MB
 })
 
 const router= express.Router()

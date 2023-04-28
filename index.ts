@@ -1,4 +1,4 @@
-import express,{ Application} from 'express'
+import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
@@ -20,7 +20,7 @@ dotenv.config()
 
 const app = express()
 const PORT = process.env.SERVER_PORT
-const router = require("./src/routers/router")
+const router = require("./src/routers")
 const allowOrigins = ["*"]
 const corsOptions = {
   origin: (origin:any, callback:any) => {
@@ -38,6 +38,7 @@ app.use(morgan('combined'))
 app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use(helmet())
+app.use(helmet.hidePoweredBy())
 
 app.use("/", authLimiter, router)
 

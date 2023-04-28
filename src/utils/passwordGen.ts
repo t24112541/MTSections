@@ -1,4 +1,4 @@
-export const genPassword = (length: number) => {
+export const genPassword = (length:number) => {
     const alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     const number = "0123456789"
     const spacialChar = "!@#$%^&*_-=+"
