@@ -1,6 +1,21 @@
 version: "3"
 
 services:
+  mt-section:
+    container_name: MTSection
+    build: ../
+    volumes:
+      - .:/MTSection
+      - /MTSection/node_modules
+    ports:
+      - $SERVER_PORT:$SERVER_PORT
+    expose:
+      - $SERVER_PORT
+    # command: "pm2 start ecosystem.config.js"
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
   db:
     container_name: maria_mt_section
     image: mariadb:10.7.8
