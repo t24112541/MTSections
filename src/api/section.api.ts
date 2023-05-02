@@ -3,6 +3,7 @@ import { RequestHandler } from 'express'
 import { sectionService } from '../services'
 import { prismaResource } from './resource'
 import { customStatus, customResponse} from '../models/response'
+import { getISODate } from '../utils/customDate'
 
 const getSection:RequestHandler = async(req:any, res:any) => {
     let keyword:string = req.query.keyword ?? ''
@@ -11,7 +12,7 @@ const getSection:RequestHandler = async(req:any, res:any) => {
             { code: { contains: keyword.trim() } },
             { name: { contains: keyword.trim() } }
         ],
-        deleted: {
+        deletedAt: {
             equals: null
         }
     }
@@ -31,13 +32,54 @@ const getSection:RequestHandler = async(req:any, res:any) => {
 } 
 
 const createSection:RequestHandler = async (req:any, res:any) => {
-    sectionService.createData(req.body, prismaResource.section).then((result)=>{
+    sectionService.createData(req.body, prismaResource.section).then((result) => {
         const ress: customResponse = {
-            statusCode: customStatus.CREATED,
+            statusCode: result.code === "P2002" ? customStatus.BAD_REQUEST : customStatus.CREATED,
             data: result
         }
 
-        res.status(customStatus.CREATED).json(ress)
+        res.status(ress.statusCode).json(ress)
+    }).catch((err) => {
+        const result = errorReturn(err)
+        res.status(result.statusCode).json(result)
+    }) 
+}
+
+const updateSection:RequestHandler = async (req:any, res:any) => {
+    const where = {
+        id: req.body.id,
+    }
+
+    sectionService.updateData(req.body, where, prismaResource.section).then((result) => {
+        const ress: customResponse = {
+            statusCode: customStatus.SUCCESS,
+            data: result
+        }
+
+        res.status(ress.statusCode).json(ress)
+    }).catch((err)=>{
+        const result = errorReturn(err)
+        res.status(result.statusCode).json(result)
+    })
+}
+
+const softDeleteSection:RequestHandler = async (req:any, res:any) => {
+    const where = {
+        id: parseInt(req.params.id)
+    }
+ 
+    const date = new Date(getISODate())
+    const request = {
+        deletedAt: date
+    }
+
+    sectionService.updateData(request, where, prismaResource.section).then((result) => {
+        const ress: customResponse = {
+            statusCode: customStatus.SUCCESS,
+            data: result
+        }
+
+        res.status(ress.statusCode).json(ress)
     }).catch((err)=>{
         const result = errorReturn(err)
         res.status(result.statusCode).json(result)
@@ -46,5 +88,7 @@ const createSection:RequestHandler = async (req:any, res:any) => {
 
 export default {
     getSection,
-    createSection
+    createSection,
+    updateSection,
+    softDeleteSection
 }

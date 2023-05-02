@@ -11,10 +11,19 @@ const getData = async(req:any, model:any, where:any) => {
 }
 
 const createData = async (req:any, model:any) => {
-    return await model.create({data:req})
+    try {
+        return await model.create({data:req})
+    } catch (error) {
+        return error
+    }
+}
+
+const updateData = async (req:any, where:any, model:any) => {
+    return await model.update({where: where, data: req})
 }
 
 export default {
     getData,
-    createData
+    createData,
+    updateData,
 }

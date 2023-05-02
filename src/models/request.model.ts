@@ -25,6 +25,16 @@ const createSection = {
   })
 }
 
+const updateSection = {
+  body: Joi.object().keys({
+    id: Joi.number().required(),
+    code: Joi.string().required(),
+    name: Joi.string().required(),
+    isActive: Joi.string().valid(...Object.values(activeStatus)).default("1"),
+    subdistrictID: Joi.number(),
+  })
+}
+
 const createClient = {
   body: Joi.object().keys({
     nameTH: Joi.string(),
@@ -42,6 +52,7 @@ const auth = {
 export default {
   filterAndPagination,
   createSection,
+  updateSection,
   createClient,
-  auth
+  auth,
 }

@@ -12,6 +12,6 @@ const upload = multer({
 const router= express.Router()
 
 router.get('/', requireJWT, validate(customRequest.filterAndPagination), clients.getClients)
-router.post('/', upload.none(), validate(customRequest.createClient), clients.createClients)
+router.post('/', requireJWT, upload.none(), validate(customRequest.createClient), clients.createClients)
 
 module.exports = router

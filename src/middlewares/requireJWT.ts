@@ -32,14 +32,13 @@ const requireJWT = async (req:Request, res:Response, next:NextFunction) => {
         }
 
         const session = await redisClient.get(decode.sub)
-
         if(!session){
             ress.data = wordReturn.AUTH_SESSION_EXPIRED
             return res.status(ress.statusCode).json(ress)
         }
 
         const where = {
-            ID: JSON.parse(session).id,
+            ID: JSON.parse(session).ID,
             deleted: {
                 equals: null
             }
