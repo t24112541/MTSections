@@ -6,7 +6,6 @@ services:
     build: ../
     volumes:
       - .:/MTSection
-      - /MTSection/node_modules
     ports:
       - $SERVER_PORT:$SERVER_PORT
     expose:

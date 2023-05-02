@@ -1,15 +1,10 @@
 import { errorReturn } from './../utils/customError'
 import { RequestHandler } from 'express'
 import { clientService } from '../services'
-import { PrismaClient } from '@prisma/client'
+import { prismaResource } from './resource'
 import { customStatus, customResponse } from '../models/response'
 import { genPassword } from '../utils/passwordGen'
 import  bcrypt from 'bcrypt'
-
-const prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
-    errorFormat: 'minimal',
-})
 
 const getClients:RequestHandler = async(req:any, res:any) => {
     let keyword:string = req.query.keyword ?? ''
@@ -24,7 +19,7 @@ const getClients:RequestHandler = async(req:any, res:any) => {
         }
     }
 
-    clientService.getData(req.query, prisma.sectionClient, where).then((data) => {
+    clientService.getData(req.query, prismaResource.sectionClient, where).then((data) => {
         const ress:customResponse = {
             statusCode: data.count != 0 ? customStatus.SUCCESS : customStatus.NOT_FOUND,
             total: data.count,
@@ -47,7 +42,7 @@ const createClients:RequestHandler = async (req:any, res:any) => {
         clientSecret: await bcrypt.hash(pass, 12)
     }
 
-    clientService.createData(data, prisma.sectionClient).then((data) => {
+    clientService.createData(data, prismaResource.sectionClient).then((data) => {
         const ress:customResponse = {
             statusCode: customStatus.CREATED,
             data: data

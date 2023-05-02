@@ -1,13 +1,8 @@
 import { RequestHandler } from 'express'
 import { locationService } from '../services'
-import { PrismaClient } from '@prisma/client'
+import { prismaResource } from './resource'
 import { errorReturn } from '../utils/customError'
 import { customResponse, customStatus } from '../models/response'
-
-const prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
-    errorFormat: 'minimal',
-})
 
 const getGeography:RequestHandler = async(req:any, res:any) => {
 
@@ -19,7 +14,7 @@ const getGeography:RequestHandler = async(req:any, res:any) => {
         ]
     }
 
-    locationService.getData(req.query, prisma.locationGeography, where).then((result) => {
+    locationService.getData(req.query, prismaResource.locationGeography, where).then((result) => {
         const ress: customResponse = {
             statusCode: result.count != 0 ? customStatus.SUCCESS : customStatus.NOT_FOUND,
             total: result.count,
@@ -43,7 +38,7 @@ const getProvince:RequestHandler = async(req:any, res:any) => {
         ]
     }
 
-    locationService.getData(req.query, prisma.locationProvince, where).then((result) => {
+    locationService.getData(req.query, prismaResource.locationProvince, where).then((result) => {
         const ress: customResponse = {
             statusCode: result.count != 0 ? customStatus.SUCCESS : customStatus.NOT_FOUND,
             total: result.count,
@@ -67,7 +62,7 @@ const getDistrict:RequestHandler = async(req:any, res:any) => {
         ]
     }
 
-    locationService.getData(req.query, prisma.locationDistrict, where).then((result) => {
+    locationService.getData(req.query, prismaResource.locationDistrict, where).then((result) => {
         const ress: customResponse = {
             statusCode: result.count != 0 ? customStatus.SUCCESS : customStatus.NOT_FOUND,
             total: result.count,
@@ -91,7 +86,7 @@ const getSubdistrict:RequestHandler = async(req:any, res:any) => {
             ]
         }
 
-    locationService.getData(req.query, prisma.locationSubdistrict, where).then((result) => {
+    locationService.getData(req.query, prismaResource.locationSubdistrict, where).then((result) => {
         const ress: customResponse = {
             statusCode: result.count != 0 ? customStatus.SUCCESS : customStatus.NOT_FOUND,
             total: result.count,

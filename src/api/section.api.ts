@@ -1,13 +1,8 @@
 import { errorReturn } from './../utils/customError'
 import { RequestHandler } from 'express'
 import { sectionService } from '../services'
-import { PrismaClient } from '@prisma/client'
+import { prismaResource } from './resource'
 import { customStatus, customResponse} from '../models/response'
-
-const prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
-    errorFormat: 'minimal',
-})
 
 const getSection:RequestHandler = async(req:any, res:any) => {
     let keyword:string = req.query.keyword ?? ''
@@ -21,7 +16,7 @@ const getSection:RequestHandler = async(req:any, res:any) => {
         }
     }
 
-    sectionService.getData(req.query, prisma.section, where).then((result) => {
+    sectionService.getData(req.query, prismaResource.section, where).then((result) => {
         const ress: customResponse = {
             statusCode: result.count != 0 ? customStatus.SUCCESS : customStatus.NOT_FOUND,
             total: result.count,
@@ -36,7 +31,7 @@ const getSection:RequestHandler = async(req:any, res:any) => {
 } 
 
 const createSection:RequestHandler = async (req:any, res:any) => {
-    sectionService.createData(req.body, prisma.section).then((result)=>{
+    sectionService.createData(req.body, prismaResource.section).then((result)=>{
         const ress: customResponse = {
             statusCode: customStatus.CREATED,
             data: result

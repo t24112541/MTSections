@@ -2,13 +2,8 @@ import { NextFunction, Request, Response } from 'express'
 import { customResponse, customStatus, wordReturn } from '../models/response'
 import { verifyJwt } from '../utils/jwt'
 import redisClient from '../utils/redis'
-import { PrismaClient } from '@prisma/client'
+import { prismaResource } from '../api/resource'
 import { clientService } from '../services'
-
-const prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
-    errorFormat: 'minimal',
-})
 
 const requireJWT = async (req:Request, res:Response, next:NextFunction) => {
     try {
@@ -37,6 +32,7 @@ const requireJWT = async (req:Request, res:Response, next:NextFunction) => {
         }
 
         const session = await redisClient.get(decode.sub)
+
         if(!session){
             ress.data = wordReturn.AUTH_SESSION_EXPIRED
             return res.status(ress.statusCode).json(ress)
@@ -49,7 +45,7 @@ const requireJWT = async (req:Request, res:Response, next:NextFunction) => {
             }
         }
     
-        const client = await clientService.findClient(prisma.sectionClient, where)
+        const client = await clientService.findClient(prismaResource.sectionClient, where)
         if(client.count === 0){
             ress.statusCode = customStatus.NOT_FOUND
             ress.data = wordReturn.AUTH_CLIENT_NOT_FOUND

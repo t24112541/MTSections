@@ -1,17 +1,12 @@
 import { errorReturn } from './../utils/customError'
 import { RequestHandler, CookieOptions } from 'express'
 import { clientService, authService } from '../services'
-import { PrismaClient } from '@prisma/client'
+import { prismaResource } from './resource'
 import { customStatus, customResponse, wordReturn} from '../models/response'
 import  bcrypt from 'bcrypt'
 import config from 'config'
 import { signJwt, verifyJwt } from '../utils/jwt'
 import redisClient from '../utils/redis'
-
-const prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
-    errorFormat: 'minimal',
-})
 
 const cookiesOptions:CookieOptions = {
     httpOnly: true,
@@ -50,7 +45,7 @@ const authClient:RequestHandler = async (req:any, res:any) => {
             data: wordReturn.AUTH_WRONG
         }
 
-        const client = await clientService.findClient(prisma.sectionClient, where)
+        const client = await clientService.findClient(prismaResource.sectionClient, where)
         if (client.count != 0) {
             const authStatus = await bcrypt.compare(
                 clientSecret.trim(),
@@ -93,8 +88,9 @@ const refreshToken = async (req:any, res:any) => {
         if(!refreshToken){
             return res.status(ress.statusCode).json(ress)
         }
-    
+
         const decode = verifyJwt<{sub:string}>(refreshToken, "refreshTokenPublicKey")
+
         if(!decode){
             ress.statusCode = customStatus.BAD_REQUEST
             ress.data = wordReturn.AUTH_TOKEN_EXPIRED
@@ -102,25 +98,26 @@ const refreshToken = async (req:any, res:any) => {
         }
     
         const session = await redisClient.get(decode.sub)
+
         if(!session){
             ress.data = wordReturn.AUTH_SESSION_EXPIRED
             return res.status(ress.statusCode).json(ress)
         }
     
         const where = {
-            ID: JSON.parse(session).id,
+            ID: JSON.parse(session).ID,
             deleted: {
                 equals: null
             }
         }
-    
-        const client = await clientService.findClient(prisma.sectionClient, where)
+
+        const client = await clientService.findClient(prismaResource.sectionClient, where)
         if(client.count === 0){
             ress.statusCode = customStatus.NOT_FOUND
             ress.data = wordReturn.AUTH_CLIENT_NOT_FOUND
             return res.status(ress.statusCode).json(ress)
         }
-    
+
         const accessToken = signJwt({sub: client.result.clientID}, 'accessTokenPrivateKey', {
             expiresIn: `${config.get<number>('accessTokenExpiresIn')}m`
         })
