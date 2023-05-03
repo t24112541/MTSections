@@ -7,6 +7,7 @@ import  bcrypt from 'bcrypt'
 import config from 'config'
 import { signJwt, verifyJwt } from '../utils/jwt'
 import redisClient from '../utils/redis'
+import { clearCookie } from '../utils/cookie'
 
 const cookiesOptions:CookieOptions = {
     httpOnly: true,
@@ -77,7 +78,6 @@ const authClient:RequestHandler = async (req:any, res:any) => {
 }
 
 const refreshToken = async (req:any, res:any) => {
-
     try {
         let ress:customResponse = {
             statusCode: customStatus.UNAUTHORIZED,
@@ -140,7 +140,42 @@ const refreshToken = async (req:any, res:any) => {
     }
 }
 
+const logoutUserHandler = async (req: any, res: any) => {
+    try {
+        const ress: customResponse = {
+            statusCode: customStatus.UNAUTHORIZED,
+            data: wordReturn.AUTH_UNAUTHORIZED,
+        }
+
+        const refreshToken = req.cookies.refreshToken
+        if(!refreshToken){
+            return res.status(ress.statusCode).json(ress)
+        }
+
+        const decode = verifyJwt<{sub: string}>(refreshToken, 'refreshTokenPublicKey')
+        if(!decode){
+            ress.statusCode = customStatus.BAD_REQUEST
+            ress.data = wordReturn.AUTH_TOKEN_EXPIRED
+            return res.status(ress.statusCode).json(ress)
+        }
+
+        await redisClient.del(decode.sub)
+        clearCookie(res)
+        ress.statusCode = customStatus.SUCCESS
+        ress.data = wordReturn.SUCCESS
+        return res.status(ress.statusCode).json(ress)
+    } catch (error: any) {
+        const ress: customResponse = {
+            statusCode: customStatus.INTERNAL_SERVER_ERROR,
+            data: error.message,
+        }
+
+        return res.status(ress.statusCode).json(ress)
+    }
+}
+
 export default {
     authClient,
     refreshToken,
+    logoutUserHandler
 }

@@ -13,7 +13,9 @@ export const wordReturn = {
     AUTH_CLIENT_NOT_FOUND: "client not found",
     AUTH_SESSION_EXPIRED: "session expired",
     AUTH_TOKEN_EXPIRED: "token expired",
-    AUTH_UNAUTHORIZED: "client unauthorized"
+    AUTH_UNAUTHORIZED: "client unauthorized",
+
+    SUCCESS: "success"
 }
 
 export interface customResponse {
