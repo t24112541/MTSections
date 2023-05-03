@@ -1,6 +1,6 @@
 import express from 'express'
-import { location } from '../api'
 import validate from '../middlewares/validate'
+import { location } from '../api'
 import { customRequest } from '../models'
 
 const router= express.Router()

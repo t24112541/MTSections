@@ -1,7 +1,7 @@
 import express from 'express'
 import multer from 'multer'
-import { clients } from '../api'
 import validate from '../middlewares/validate'
+import { clients } from '../api'
 import { customRequest } from '../models'
 import requireJWT from '../middlewares/requireJWT'
 

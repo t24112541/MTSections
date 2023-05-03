@@ -1,9 +1,10 @@
 import express from 'express'
 import multer from 'multer'
-import { section } from '../api'
 import validate from '../middlewares/validate'
-import { customRequest } from '../models'
 import requireJWT from '../middlewares/requireJWT'
+import { section } from '../api'
+import { customRequest } from '../models'
+
 
 const upload = multer({ 
     limits: { fileSize: 1 * 1024 * 1024 }  // 1 MB
