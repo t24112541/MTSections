@@ -9,7 +9,7 @@
 # Kill process
 netstat -ano | findstr :3300
 
-# RUN Priduction mode (pm2)
+# RUN Production mode (pm2)
 pm2 start ecosystem.config.js
 pm2 stop ecosystem.config.js
 pm2 delete all
