@@ -10,7 +10,7 @@ generator client {
 }
 
 model section {
-  id            Int                  @id @default(autoincrement())
+  ID            Int                  @id @default(autoincrement())
   code          String               @unique @map("code") @db.VarChar(255)
   name          String               @map("name") @db.VarChar(255)
   isActive      IsActive             @default(YES) @map("is_active")
@@ -74,7 +74,7 @@ model sectionClient {
   nameEN       String?   @map("name_en") @db.VarChar(255)
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
-  deleted      DateTime? @map("deleted_at")
+  deletedAt    DateTime? @map("deleted_at")
 
   @@map("section_client")
 }

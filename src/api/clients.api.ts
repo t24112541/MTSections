@@ -2,8 +2,9 @@ import { errorReturn } from './../utils/customError'
 import { RequestHandler } from 'express'
 import { clientService } from '../services'
 import { prismaResource } from './resource'
-import { customStatus, customResponse } from '../models/response'
+import { customStatus, customResponse, wordReturn } from '../models/response'
 import { genPassword } from '../utils/passwordGen'
+import { getISODate } from '../utils/customDate'
 import  bcrypt from 'bcrypt'
 
 const getClients:RequestHandler = async(req:any, res:any) => {
@@ -14,7 +15,7 @@ const getClients:RequestHandler = async(req:any, res:any) => {
             { nameTH: { contains: keyword.trim() } },
             { nameEN: { contains: keyword.trim() } }
         ],
-        deleted: {
+        deletedAt: {
             equals: null
         }
     }
@@ -56,7 +57,32 @@ const createClients:RequestHandler = async (req:any, res:any) => {
     })
 }
 
+
+const softDeleteClient:RequestHandler = async (req:any, res:any) => {
+    const where = {
+        ID: parseInt(req.params.id)
+    }
+ 
+    const date = new Date(getISODate())
+    const request = {
+        deletedAt: date
+    }
+
+    clientService.updateData(request, where, prismaResource.sectionClient).then((result) => {
+        const ress: customResponse = {
+            statusCode: result.code === "P2025" ? customStatus.BAD_REQUEST : customStatus.SUCCESS,
+            data: wordReturn.SUCCESS
+        }
+
+        res.status(ress.statusCode).json(ress)
+    }).catch((err)=>{
+        const result = errorReturn(err)
+        res.status(result.statusCode).json(result)
+    })
+}
+
 export default {
     getClients,
     createClients,
+    softDeleteClient
 }

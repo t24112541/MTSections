@@ -35,7 +35,7 @@ const authClient:RequestHandler = async (req:any, res:any) => {
     const { clientID, clientSecret }  = req.body
     const where = {
         clientID: clientID.trim(),
-        deleted: {
+        deletedAt: {
             equals: null
         }
     }
@@ -106,7 +106,7 @@ const refreshToken = async (req:any, res:any) => {
     
         const where = {
             ID: JSON.parse(session).ID,
-            deleted: {
+            deletedAt: {
                 equals: null
             }
         }

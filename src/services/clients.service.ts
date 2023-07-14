@@ -30,8 +30,18 @@ const createData = async (req:any, model:any) => {
     })
 }
 
+const updateData = async (req:any, where:any, model:any) => {
+    try {
+        return await model.update({where: where, data: req})
+    } catch (error) {
+        return error
+    }
+    
+}
+
 export default {
     getData,
     findClient,
-    createData
+    createData,
+    updateData
 }

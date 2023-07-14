@@ -39,7 +39,7 @@ const requireJWT = async (req:Request, res:Response, next:NextFunction) => {
 
         const where = {
             ID: JSON.parse(session).ID,
-            deleted: {
+            deletedAt: {
                 equals: null
             }
         }

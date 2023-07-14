@@ -2,7 +2,7 @@ import { errorReturn } from './../utils/customError'
 import { RequestHandler } from 'express'
 import { sectionService } from '../services'
 import { prismaResource } from './resource'
-import { customStatus, customResponse} from '../models/response'
+import { customStatus, customResponse, wordReturn } from '../models/response'
 import { getISODate } from '../utils/customDate'
 
 const getSection:RequestHandler = async(req:any, res:any) => {
@@ -65,7 +65,7 @@ const updateSection:RequestHandler = async (req:any, res:any) => {
 
 const softDeleteSection:RequestHandler = async (req:any, res:any) => {
     const where = {
-        id: parseInt(req.params.id)
+        ID: parseInt(req.params.id)
     }
  
     const date = new Date(getISODate())
@@ -76,7 +76,7 @@ const softDeleteSection:RequestHandler = async (req:any, res:any) => {
     sectionService.updateData(request, where, prismaResource.section).then((result) => {
         const ress: customResponse = {
             statusCode: customStatus.SUCCESS,
-            data: result
+            data: wordReturn.SUCCESS
         }
 
         res.status(ress.statusCode).json(ress)

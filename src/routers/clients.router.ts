@@ -13,5 +13,6 @@ const router= express.Router()
 
 router.get('/', requireJWT, validate(customRequest.filterAndPagination), clients.getClients)
 router.post('/', requireJWT, upload.none(), validate(customRequest.createClient), clients.createClients)
+router.delete('/:id', requireJWT, clients.softDeleteClient)
 
 module.exports = router

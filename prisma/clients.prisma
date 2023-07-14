@@ -11,7 +11,7 @@ model sectionClient {
     nameEN       String?   @map("name_en") @db.VarChar(255)
     createdAt    DateTime  @default(now()) @map("created_at")
     updatedAt    DateTime  @updatedAt @map("updated_at")
-    deleted      DateTime? @map("deleted_at")
+    deletedAt    DateTime? @map("deleted_at")
 
     @@map("section_client")
 }

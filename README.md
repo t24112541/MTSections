@@ -1,4 +1,13 @@
 
+# NPM command
+    "dev": "nodemon",
+    "init-db": "docker-compose -f ./builder/docker-compose.yml --env-file ./.env up -d --build db",
+    "migrate": "npx prismix && prisma format && npx prisma migrate dev && npx prisma generate",
+    "build": "tsc --project ./",
+    "docker:build": "docker-compose -f ./builder/docker-compose.yml --env-file ./.env up -d --build mt-section",
+    "prismix:set": "npm remove dotenv && npm i prismix",
+    "prismix:remove": "npm remove prismix && npm i dotenv"
+
 
 # Prisma migrate
 > npx prisma migrate dev --name [commit msg]
@@ -24,3 +33,8 @@ prismix, dotenv : conflict
 ## for dev
 npm remove dotenv
 npm i prismix --save-dev
+
+
+
+a30df192-5e5e-40dd-b82b-c207518075e0
+$2b$12$tK7SkGJRiavN7Hl1bJ.DMuA8waV.EecDGz7tIU85uZEL/v/oB4fgy

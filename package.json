@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "init-db": "docker-compose -f ./builder/docker-compose.yml --env-file ./.env up -d --build db",
     "migrate": "npx prismix && prisma format && npx prisma migrate dev && npx prisma generate",
     "build": "tsc --project ./",
-    "docker:build": "docker-compose -f ./builder/docker-compose.yml --env-file ./.env up -d --build mt-section"
+    "docker:redis": "docker-compose -f ./builder/docker-compose.yml --env-file ./.env up -d --build redis",
+    "docker:db": "docker-compose -f ./builder/docker-compose.yml --env-file ./.env up -d --build db",
+    "docker:build": "docker-compose -f ./builder/docker-compose.yml --env-file ./.env up -d --build mt-section",
+    "prismix:set": "npm remove dotenv && npm i prismix",
+    "prismix:remove": "npm remove prismix && npm i dotenv"
   },
   "keywords": [],
   "author": "cv",
